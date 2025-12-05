@@ -1,33 +1,38 @@
-const BASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_FUNCTION_URL || "").replace(/\/+$/, "");
-
-const ensureBaseUrl = () => {
-  if (!BASE_URL) {
-    throw new Error("URL da API não configurada: defina NEXT_PUBLIC_SUPABASE_FUNCTION_URL");
-  }
-};
 import type { Transaction } from "../types/financial";
 
-export const getTransactions = async (): Promise<Transaction[]> => {
-  ensureBaseUrl();
-  const res = await fetch(`${BASE_URL}/transactions`);
-  if (!res.ok) throw new Error("Falha ao carregar transações");
-  return await res.json();
+const STORAGE_KEY = "mf.transactions";
+
+const read = (): Transaction[] => {
+  if (typeof window === "undefined") return [];
+  const raw = window.localStorage.getItem(STORAGE_KEY);
+  try {
+    return raw ? (JSON.parse(raw) as Transaction[]) : [];
+  } catch {
+    return [];
+  }
 };
 
-export const addTransaction = async (payload: Omit<Transaction, "id">): Promise<Transaction> => {
-  ensureBaseUrl();
-  const res = await fetch(`${BASE_URL}/transactions`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) throw new Error("Falha ao criar transação");
-  return await res.json();
+const write = (items: Transaction[]) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+};
+
+export const getTransactions = async (): Promise<Transaction[]> => {
+  return read();
+};
+
+export const addTransaction = async (
+  payload: Omit<Transaction, "id">
+): Promise<Transaction> => {
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  const created: Transaction = { id, ...payload };
+  const items = [created, ...read()];
+  write(items);
+  return created;
 };
 
 export const deleteTransaction = async (id: string): Promise<void> => {
-  ensureBaseUrl();
-  const res = await fetch(`${BASE_URL}/transactions/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Falha ao excluir transação");
+  const items = read().filter((t) => t.id !== id);
+  write(items);
 };
 
