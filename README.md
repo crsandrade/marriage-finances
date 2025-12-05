@@ -1,7 +1,9 @@
 
   # Sistema Financeiro para Casais
 
-  This is a code bundle for Sistema Financeiro para Casais. The original project is available at https://www.figma.com/design/QCj7CBwnZYC5fSTs3M3S65/Sistema-Financeiro-para-Casais.
+  Código gerado para um sistema financeiro entre casais. The first one couple: Lavínia e Rafael
+  
+  Projeto: https://www.figma.com/design/QCj7CBwnZYC5fSTs3M3S65/Sistema-Financeiro-para-Casais.
 
   ## Running the code
 
