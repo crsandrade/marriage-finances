@@ -1,38 +1,45 @@
+import { supabase } from "../lib/supabase";
 import type { Transaction } from "../types/financial";
 
-const STORAGE_KEY = "mf.transactions";
+export const getTransactions = async (): Promise<Transaction[]> => {
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("*")
+    .order("date", { ascending: false });
 
-const read = (): Transaction[] => {
-  if (typeof window === "undefined") return [];
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  try {
-    return raw ? (JSON.parse(raw) as Transaction[]) : [];
-  } catch {
+  if (error) {
+    console.error("Erro ao buscar transações:", error);
     return [];
   }
-};
 
-const write = (items: Transaction[]) => {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-};
-
-export const getTransactions = async (): Promise<Transaction[]> => {
-  return read();
+  return data as Transaction[];
 };
 
 export const addTransaction = async (
   payload: Omit<Transaction, "id">
 ): Promise<Transaction> => {
-  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-  const created: Transaction = { id, ...payload };
-  const items = [created, ...read()];
-  write(items);
-  return created;
-};
+  const { data, error } = await supabase
+    .from("transactions")
+    .insert(payload)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Erro ao criar transação:", error);
+    throw error;
+  }
+
+  return data as Transaction;
+}
 
 export const deleteTransaction = async (id: string): Promise<void> => {
-  const items = read().filter((t) => t.id !== id);
-  write(items);
-};
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id);
 
+  if (error) {
+    console.error("Erro ao deletar transação", error);
+    throw error;
+  }
+};
