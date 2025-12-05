@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_SUPABASE_FUNCTION_URL as string;
+const BASE_URL = process.env.NEXT_PUBLIC_SUPABASE_FUNCTION_URL as string;
 import type { Transaction } from "../types/financial";
 
 export const getTransactions = async (): Promise<Transaction[]> => {
