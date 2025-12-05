@@ -106,7 +106,7 @@ export function TransactionForm({ onClose, onSubmit }: TransactionFormProps) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                Pessoa 1
+                Rafael
               </button>
               <button
                 type="button"
@@ -117,7 +117,7 @@ export function TransactionForm({ onClose, onSubmit }: TransactionFormProps) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                Pessoa 2
+                Lavínia
               </button>
               <button
                 type="button"
