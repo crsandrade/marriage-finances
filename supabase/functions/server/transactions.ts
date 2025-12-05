@@ -1,4 +1,5 @@
-import { createClient } from "jsr:@supabase/supabase-js@2.49.8";
+import { createClient } from "@supabase/supabase-js";
+
 
 type TransactionType = "income" | "expense";
 type Owner = "person1" | "person2" | "shared";
@@ -18,8 +19,8 @@ interface Transaction {
 }
 
 const client = () => createClient(
-  Deno.env.get("SUPABASE_URL"),
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 export const listTransactions = async (): Promise<Transaction[]> => {
