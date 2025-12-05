@@ -2,7 +2,6 @@ import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as transactions from "../server/transactions.ts";
-
 const app = new Hono();
 
 app.use('*', logger(console.log));
@@ -18,9 +17,11 @@ app.use(
   }),
 );
 
-app.get("/make-server-db4095b8/health", (c) => c.json({ status: "ok" }));
+app.get("/health", (c) => {
+  return c.json({ status: "ok" });
+});
 
-app.get("/make-server-db4095b8/transactions", async (c) => {
+app.get("/transactions", async (c) => {
   try {
     const data = await transactions.listTransactions();
     return c.json(data);
@@ -29,7 +30,7 @@ app.get("/make-server-db4095b8/transactions", async (c) => {
   }
 });
 
-app.post("/make-server-db4095b8/transactions", async (c) => {
+app.post("/transactions", async (c) => {
   try {
     const payload = await c.req.json();
     const created = await transactions.createTransaction(payload);
@@ -39,7 +40,7 @@ app.post("/make-server-db4095b8/transactions", async (c) => {
   }
 });
 
-app.delete("/make-server-db4095b8/transactions/:id", async (c) => {
+app.delete("/transactions/:id", async (c) => {
   try {
     const id = c.req.param("id");
     await transactions.deleteTransaction(id);
