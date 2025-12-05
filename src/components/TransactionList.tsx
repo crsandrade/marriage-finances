@@ -178,10 +178,10 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                       <div className="flex items-center gap-2 mb-1">
                         <p className="text-slate-900 truncate">{transaction.description}</p>
                         {transaction.isRecurring && (
-                          <Repeat className="w-4 h-4 text-blue-600 flex-shrink-0" title="Recorrente" />
+                          <Repeat className="w-4 h-4 text-blue-600 flex-shrink-0" aria-label="Recorrente" />
                         )}
                         {transaction.isInstallment && (
-                          <CreditCard className="w-4 h-4 text-orange-600 flex-shrink-0" title="Parcelado" />
+                          <CreditCard className="w-4 h-4 text-orange-600 flex-shrink-0" aria-label="Parcelado" />
                         )}
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">

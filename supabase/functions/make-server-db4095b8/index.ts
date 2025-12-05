@@ -1,7 +1,7 @@
 import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
-import * as transactions from "../../../src/supabase/functions/server/transactions.tsx";
+import * as transactions from "../server/transactions.ts";
 
 const app = new Hono();
 

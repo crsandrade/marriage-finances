@@ -1,13 +1,11 @@
 import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
-import * as transactions from "./transactions.tsx";
+import * as transactions from "./transactions.ts";
 const app = new Hono();
 
-// Enable logger
 app.use('*', logger(console.log));
 
-// Enable CORS for all routes and methods
 app.use(
   "/*",
   cors({
@@ -19,7 +17,6 @@ app.use(
   }),
 );
 
-// Health check endpoint
 app.get("/make-server-db4095b8/health", (c) => {
   return c.json({ status: "ok" });
 });
