@@ -1,64 +1,81 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { Dashboard } from '../components/Dashboard';
-import { TransactionForm } from '../components/TransactionForm';
-import { TransactionList } from '../components/TransactionList';
-import { Header } from '../components/Header';
-import type { Transaction } from '../types/financial';
-import { getTransactions, addTransaction as apiAddTransaction, deleteTransaction as apiDeleteTransaction } from '../services/api';
 
-export default function Home() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(true);
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await getTransactions();
-        setTransactions(data);
-      } catch {
-        setTransactions([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const addTransaction = async (transaction: Omit<Transaction, 'id'>) => {
-    const created = await apiAddTransaction(transaction);
-    setTransactions([created, ...transactions]);
-    setShowForm(false);
-  };
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const deleteTransaction = async (id: string) => {
-    await apiDeleteTransaction(id);
-    setTransactions(transactions.filter(t => t.id !== id));
+    console.log("Email:", email);
+    console.log("Senha:", password);
+
+    setTimeout(() => setLoading(false), 900);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <Header onAddClick={() => setShowForm(true)} />
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <Dashboard transactions={transactions} />
-        <div className="mt-8">
-          {loading ? (
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-12 text-center text-slate-500">Carregando...</div>
-          ) : (
-            <TransactionList 
-              transactions={transactions} 
-              onDelete={deleteTransaction}
-            />
-          )}
-        </div>
-      </main>
-      {showForm && (
-        <TransactionForm 
-          onClose={() => setShowForm(false)}
-          onSubmit={addTransaction}
-        />
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
+      <Card className="w-full max-w-sm shadow-lg border border-slate-200">
+        <CardContent className="pt-6 flex flex-col gap-6">
+
+          {/* Título */}
+          <div className="flex flex-col text-center gap-1">
+            <h1 className="text-2xl font-semibold">Entrar</h1>
+            <p className="text-sm text-slate-500">
+              Acesse sua conta para continuar
+            </p>
+          </div>
+
+          {/* Formulário */}
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
+            
+            {/* E-mail */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Senha */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Botão */}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Entrando..." : "Entrar"}
+            </Button>
+          </form>
+
+          {/* Rodapé */}
+          <p className="text-xs text-slate-500 text-center">
+            Esta é uma tela de login simples (sem autenticação real).
+          </p>
+
+        </CardContent>
+      </Card>
     </div>
   );
 }

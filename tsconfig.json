@@ -20,6 +20,9 @@
       "node"
     ],
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "incremental": true,
     "plugins": [
       {
@@ -39,3 +42,4 @@
     "supabase/functions/**"
   ]
 }
+
