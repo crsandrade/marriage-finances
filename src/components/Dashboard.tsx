@@ -4,9 +4,10 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 interface DashboardProps {
   transactions: Transaction[];
+  personNames: { person1: string; person2: string };
 }
 
-export function Dashboard({ transactions }: DashboardProps) {
+export function Dashboard({ transactions, personNames }: DashboardProps) {
   const summary: FinancialSummary = transactions.reduce(
     (acc, transaction) => {
       const amount = transaction.amount;
@@ -42,12 +43,12 @@ export function Dashboard({ transactions }: DashboardProps) {
 
   const chartData = [
     {
-      name: 'Pessoa 1',
+      name: personNames.person1,
       Receitas: summary.person1Income,
       Despesas: summary.person1Expenses,
     },
     {
-      name: 'Pessoa 2',
+      name: personNames.person2,
       Receitas: summary.person2Income,
       Despesas: summary.person2Expenses,
     },
@@ -187,7 +188,7 @@ export function Dashboard({ transactions }: DashboardProps) {
             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
               <User className="w-6 h-6" />
             </div>
-            <h3>Pessoa 1</h3>
+            <h3>{personNames.person1}</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
@@ -210,7 +211,7 @@ export function Dashboard({ transactions }: DashboardProps) {
             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
               <User className="w-6 h-6" />
             </div>
-            <h3>Pessoa 2</h3>
+            <h3>{personNames.person2}</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">

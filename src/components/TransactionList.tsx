@@ -5,12 +5,13 @@ import { Trash2, TrendingUp, TrendingDown, Calendar, Repeat, CreditCard, Filter 
 interface TransactionListProps {
   transactions: Transaction[];
   onDelete: (id: string) => void;
+  personNames: { person1: string; person2: string };
 }
 
 type FilterType = 'all' | 'income' | 'expense';
 type FilterOwner = 'all' | 'person1' | 'person2' | 'shared';
 
-export function TransactionList({ transactions, onDelete }: TransactionListProps) {
+export function TransactionList({ transactions, onDelete, personNames }: TransactionListProps) {
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [filterOwner, setFilterOwner] = useState<FilterOwner>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,8 +26,8 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
 
   const getOwnerLabel = (owner: string) => {
     switch (owner) {
-      case 'person1': return 'Pessoa 1';
-      case 'person2': return 'Pessoa 2';
+      case 'person1': return personNames.person1;
+      case 'person2': return personNames.person2;
       case 'shared': return 'Compartilhado';
       default: return owner;
     }

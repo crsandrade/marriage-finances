@@ -1,6 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supaBaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supaBaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+export const supabaseServer = () => {
+  const url = process.env.SUPABASE_URL || "";
+  const anon = process.env.SUPABASE_ANON_KEY || "";
+  if (!url || !anon) {
+    throw new Error("SUPABASE_URL/SUPABASE_ANON_KEY não configurados");
+  }
+  return createClient(url, anon);
+};
 
-export const supabase = createClient(supaBaseUrl, supaBaseKey);

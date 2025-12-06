@@ -5,6 +5,7 @@ import { Transaction, TransactionType, Owner } from '../types/financial';
 interface TransactionFormProps {
   onClose: () => void;
   onSubmit: (transaction: Omit<Transaction, 'id'>) => void;
+  personNames: { person1: string; person2: string };
 }
 
 const categories = {
@@ -12,7 +13,7 @@ const categories = {
   expense: ['Aluguel', 'Supermercado', 'Transporte', 'Alimentação', 'Lazer', 'Saúde', 'Educação', 'Contas', 'Outros'],
 };
 
-export function TransactionForm({ onClose, onSubmit }: TransactionFormProps) {
+export function TransactionForm({ onClose, onSubmit, personNames }: TransactionFormProps) {
   const [type, setType] = useState<TransactionType>('expense');
   const [owner, setOwner] = useState<Owner>('shared');
   const [category, setCategory] = useState('');
@@ -106,7 +107,7 @@ export function TransactionForm({ onClose, onSubmit }: TransactionFormProps) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                Rafael
+                {personNames.person1}
               </button>
               <button
                 type="button"
@@ -117,7 +118,7 @@ export function TransactionForm({ onClose, onSubmit }: TransactionFormProps) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                Lavínia
+                {personNames.person2}
               </button>
               <button
                 type="button"
