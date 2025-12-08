@@ -199,7 +199,7 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
                     </p>
                     <div className="flex items-center gap-1 text-slate-500 text-sm justify-end mt-1">
                       <Calendar className="w-3 h-3" />
-                      <span>{new Date(transaction.created_at).toLocaleDateString('pt-BR')}</span>
+                      <span>{transaction.date.split("-").reverse().join("/")}</span>
                     </div>
                   </div>
                   <button

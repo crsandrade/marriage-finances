@@ -138,9 +138,9 @@ export default function DashboardPage() {
   };
 
   const filteredTransactions = transactions.filter((t) => {
-    if (!t.created_at) return false;
+    if (!t.date) return false;
 
-    const d = new Date(t.created_at);
+    const d = new Date(t.date);
     const month = d.getMonth() + 1;
     const year = d.getFullYear();
 
