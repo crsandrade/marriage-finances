@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Transaction } from '../types/financial';
-import { Trash2, TrendingUp, TrendingDown, Calendar, Repeat, CreditCard, Filter } from 'lucide-react';
+import { Trash2, TrendingUp, TrendingDown, Calendar, Repeat, CreditCard, Filter, Edit } from 'lucide-react';
 
 interface TransactionListProps {
   transactions: Transaction[];
   onDelete: (id: string) => void;
+  onEdit: (transaction: Transaction) => void; // NOVO
 }
 
 type FilterType = 'all' | 'income' | 'expense';
 type FilterOwner = 'all' | 'person1' | 'person2' | 'shared';
 
-export function TransactionList({ transactions, onDelete }: TransactionListProps) {
+export function TransactionList({ transactions, onDelete, onEdit }: TransactionListProps) {
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [filterOwner, setFilterOwner] = useState<FilterOwner>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,7 +20,7 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
     const matchesType = filterType === 'all' || t.type === filterType;
     const matchesOwner = filterOwner === 'all' || t.owner === filterOwner;
     const matchesSearch = t.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          t.category.toLowerCase().includes(searchTerm.toLowerCase());
+      t.category.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesType && matchesOwner && matchesSearch;
   });
 
@@ -67,31 +68,28 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
             <div className="flex gap-2">
               <button
                 onClick={() => setFilterType('all')}
-                className={`flex-1 px-4 py-2 rounded-lg transition-all ${
-                  filterType === 'all'
+                className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'all'
                     ? 'bg-slate-900 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Todas
               </button>
               <button
                 onClick={() => setFilterType('income')}
-                className={`flex-1 px-4 py-2 rounded-lg transition-all ${
-                  filterType === 'income'
+                className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'income'
                     ? 'bg-green-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Receitas
               </button>
               <button
                 onClick={() => setFilterType('expense')}
-                className={`flex-1 px-4 py-2 rounded-lg transition-all ${
-                  filterType === 'expense'
+                className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'expense'
                     ? 'bg-red-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Despesas
               </button>
@@ -103,41 +101,37 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
             <div className="flex gap-2">
               <button
                 onClick={() => setFilterOwner('all')}
-                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${
-                  filterOwner === 'all'
+                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'all'
                     ? 'bg-slate-900 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Todos
               </button>
               <button
                 onClick={() => setFilterOwner('person1')}
-                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${
-                  filterOwner === 'person1'
+                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'person1'
                     ? 'bg-blue-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 P1
               </button>
               <button
                 onClick={() => setFilterOwner('person2')}
-                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${
-                  filterOwner === 'person2'
+                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'person2'
                     ? 'bg-purple-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 P2
               </button>
               <button
                 onClick={() => setFilterOwner('shared')}
-                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${
-                  filterOwner === 'shared'
+                className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'shared'
                     ? 'bg-pink-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Comp.
               </button>
@@ -161,15 +155,13 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className={`p-2 rounded-lg ${
-                      transaction.type === 'income'
+                    <div className={`p-2 rounded-lg ${transaction.type === 'income'
                         ? 'bg-green-100'
                         : 'bg-red-100'
-                    }`}>
+                      }`}>
                       {transaction.type === 'income' ? (
-                        <TrendingUp className={`w-4 h-4 ${
-                          transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                        }`} />
+                        <TrendingUp className={`w-4 h-4 ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                          }`} />
                       ) : (
                         <TrendingDown className="w-4 h-4 text-red-600" />
                       )}
@@ -201,9 +193,8 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
 
                 <div className="flex items-center gap-4 flex-shrink-0">
                   <div className="text-right">
-                    <p className={`${
-                      transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                    }`}>
+                    <p className={`${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                      }`}>
                       {transaction.type === 'income' ? '+' : '-'} R$ {transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                     <div className="flex items-center gap-1 text-slate-500 text-sm justify-end mt-1">
@@ -212,12 +203,20 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                     </div>
                   </div>
                   <button
+                    onClick={() => onEdit(transaction)}
+                    className="p-2 opacity-0 group-hover:opacity-100 hover:bg-blue-100 rounded-lg transition-all"
+                    title="Editar"
+                  >
+                    <Edit className="w-4 h-4 text-blue-600" />
+                  </button>
+                  <button
                     onClick={() => onDelete(transaction.id)}
                     className="p-2 opacity-0 group-hover:opacity-100 hover:bg-red-100 rounded-lg transition-all"
                     title="Excluir"
                   >
                     <Trash2 className="w-4 h-4 text-red-600" />
                   </button>
+
                 </div>
               </div>
             </div>

@@ -23,6 +23,7 @@ interface Profile {
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [user, setUser] = useState<any>(null);
@@ -64,22 +65,82 @@ export default function DashboardPage() {
     loadEverything();
   }, []);
 
-  const addTransaction = async (transaction: Omit<Transaction, "id">) => {
-    const created = await apiAddTransaction(transaction);
-    setTransactions([created, ...transactions]);
+  // 🔄 Recarregar transações após create/edit/delete
+  const loadTransactions = async () => {
+    const data = await getTransactions();
+    setTransactions(data);
+  };
+
+  // ➕ Criar transação (NOVO)
+  const createTransaction = async (transaction: Partial<Transaction>) => {
+    const created = await apiAddTransaction(transaction as Omit<Transaction, "id">);
+    setTransactions((prev) => [created, ...prev]);
+  };
+
+  // ✏️ Editar transação (NOVO)
+  const updateTransaction = async (transaction: Partial<Transaction>) => {
+    if (!transaction.id) return;
+
+    const { error } = await supabase
+      .from("transactions")
+      .update({
+        type: transaction.type,
+        owner: transaction.owner,
+        category: transaction.category,
+        amount: transaction.amount,
+        description: transaction.description,
+        date: transaction.date,
+        isRecurring: transaction.isRecurring,
+        isInstallment: transaction.isInstallment,
+        installmentCurrent: transaction.installmentCurrent,
+        installmentTotal: transaction.installmentTotal,
+      })
+      .eq("id", transaction.id);
+
+    if (error) console.error(error);
+  };
+
+  // ❌ Corrigir nome da função
+  const handleDelete = async (id: string) => {
+    await apiDeleteTransaction(id);
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // 🟦 Abrir modal para editar
+  const handleEdit = (transaction: Transaction) => {
+    setTransactionToEdit(transaction);
+    setShowForm(true);
+  };
+
+  // 🟩 Abrir modal para criar
+  const openNewTransaction = () => {
+    setTransactionToEdit(null);
+    setShowForm(true);
+  };
+
+  // 🟪 Enviar (criar ou editar)
+  const handleSubmitFromModal = async (transaction: Partial<Transaction>) => {
+    if (transaction.id) {
+      // EDITAR
+      await updateTransaction(transaction);
+    } else {
+      // CRIAR
+      await createTransaction(transaction);
+    }
+
+    await loadTransactions();
     setShowForm(false);
   };
 
-  const deleteTransaction = async (id: string) => {
-    await apiDeleteTransaction(id);
-    setTransactions(transactions.filter((t) => t.id !== id));
-  };
+
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
 
       <Header
-        onAddClick={() => setShowForm(true)}
+        onAddClick={openNewTransaction}
         userName={profile?.name}
         userEmail={user?.email}
       />
@@ -107,8 +168,10 @@ export default function DashboardPage() {
           ) : (
             <TransactionList
               transactions={transactions}
-              onDelete={deleteTransaction}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
             />
+
           )}
         </div>
       </main>
@@ -116,7 +179,8 @@ export default function DashboardPage() {
       {showForm && (
         <TransactionForm
           onClose={() => setShowForm(false)}
-          onSubmit={addTransaction}
+          onSubmit={handleSubmitFromModal}  // vou te ensinar já já
+          transactionToEdit={transactionToEdit} // ← chave da edição
         />
       )}
     </div>
