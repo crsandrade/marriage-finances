@@ -13,6 +13,10 @@ import {
 } from "../../services/api";
 
 import { supabase } from "@/lib/supabase";
+import { MonthBar } from "../../components/MonthBar";
+import { YearSelect } from "../../components/YearSelect";
+
+
 
 interface Profile {
   id: string;
@@ -25,7 +29,8 @@ export default function DashboardPage() {
   const [showForm, setShowForm] = useState(false);
   const [transactionToEdit, setTransactionToEdit] = useState<Transaction | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
 
@@ -132,6 +137,17 @@ export default function DashboardPage() {
     setShowForm(false);
   };
 
+  const filteredTransactions = transactions.filter((t) => {
+    if (!t.created_at) return false;
+
+    const d = new Date(t.created_at);
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    return month === selectedMonth && year === selectedYear;
+  });
+
+
 
 
 
@@ -158,7 +174,23 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <Dashboard transactions={transactions} />
+        <div className="flex flex-col gap-4 mb-6">
+
+          <YearSelect
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+          />
+
+          <MonthBar
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+          />
+
+        </div>
+
+
+
+        <Dashboard transactions={filteredTransactions} />
 
         <div className="mt-8">
           {loading ? (
@@ -167,10 +199,11 @@ export default function DashboardPage() {
             </div>
           ) : (
             <TransactionList
-              transactions={transactions}
+              transactions={filteredTransactions}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />
+
 
           )}
         </div>
