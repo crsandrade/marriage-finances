@@ -14,7 +14,7 @@ interface MonthBarProps {
 
 export function MonthBar({ selectedMonth, setSelectedMonth }: MonthBarProps) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="flex justify-between overflow-x-auto pb-2 scrollbar-hide font-bold">
       {MONTHS.map((m, index) => {
         const monthNumber = index + 1;
         const isActive = monthNumber === selectedMonth;

@@ -4,13 +4,17 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 interface DashboardProps {
   transactions: Transaction[];
+  person1Name: string; // novo
+  person2Name: string; // novo
 }
 
-export function Dashboard({ transactions }: DashboardProps) {
+
+export function Dashboard({ transactions, person1Name, person2Name }: DashboardProps) {
+
   const summary: FinancialSummary = transactions.reduce(
     (acc, transaction) => {
       const amount = transaction.amount;
-      
+
       if (transaction.type === 'income') {
         acc.totalIncome += amount;
         if (transaction.owner === 'person1') acc.person1Income += amount;
@@ -22,7 +26,7 @@ export function Dashboard({ transactions }: DashboardProps) {
         else if (transaction.owner === 'person2') acc.person2Expenses += amount;
         else acc.sharedExpenses += amount;
       }
-      
+
       return acc;
     },
     {
@@ -42,12 +46,12 @@ export function Dashboard({ transactions }: DashboardProps) {
 
   const chartData = [
     {
-      name: 'Pessoa 1',
+      name: person1Name,
       Receitas: summary.person1Income,
       Despesas: summary.person1Expenses,
     },
     {
-      name: 'Pessoa 2',
+      name: person2Name,
       Receitas: summary.person2Income,
       Despesas: summary.person2Expenses,
     },
@@ -57,6 +61,8 @@ export function Dashboard({ transactions }: DashboardProps) {
       Despesas: summary.sharedExpenses,
     },
   ];
+
+
 
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
@@ -135,9 +141,9 @@ export function Dashboard({ transactions }: DashboardProps) {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="name" stroke="#64748b" />
               <YAxis stroke="#64748b" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px'
                 }}
@@ -167,9 +173,9 @@ export function Dashboard({ transactions }: DashboardProps) {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
                   border: '1px solid #e2e8f0',
                   borderRadius: '8px'
                 }}
@@ -187,7 +193,7 @@ export function Dashboard({ transactions }: DashboardProps) {
             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
               <User className="w-6 h-6" />
             </div>
-            <h3>Pessoa 1</h3>
+            <h3>{person1Name}</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
@@ -210,7 +216,7 @@ export function Dashboard({ transactions }: DashboardProps) {
             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
               <User className="w-6 h-6" />
             </div>
-            <h3>Pessoa 2</h3>
+            <h3>{person2Name}</h3>
           </div>
           <div className="space-y-3">
             <div className="flex justify-between items-center">

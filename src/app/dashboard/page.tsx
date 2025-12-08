@@ -15,6 +15,8 @@ import {
 import { supabase } from "@/lib/supabase";
 import { MonthBar } from "../../components/MonthBar";
 import { YearSelect } from "../../components/YearSelect";
+import EditNamesModal from "@/components/EditNamesModal";
+
 
 
 
@@ -33,6 +35,20 @@ export default function DashboardPage() {
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  async function loadProfile(userId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (!error) setProfile(data);
+  }
+
+
 
   useEffect(() => {
     const loadEverything = async () => {
@@ -69,6 +85,12 @@ export default function DashboardPage() {
 
     loadEverything();
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    loadProfile(user.id);
+  }, [user]);
+
 
   // 🔄 Recarregar transações após create/edit/delete
   const loadTransactions = async () => {
@@ -147,34 +169,44 @@ export default function DashboardPage() {
     return month === selectedMonth && year === selectedYear;
   });
 
-
-
+  function openSettingsModal() {
+    setIsModalOpen(true);
+  }
 
 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
 
-      <Header
-        onAddClick={openNewTransaction}
-        userName={profile?.name}
-        userEmail={user?.email}
-      />
-
       <main className="max-w-7xl mx-auto px-4 py-8">
 
-        {profile && (
+        
+        <div className="flex flex-col gap-4 mb-6">
+
+      <Header
+        onAddClick={() => setIsAddOpen(true)}
+        userName={profile?.person1_name}
+        userEmail={user?.email ?? null}
+        onOpenSettings={openSettingsModal}
+      />
+
+      {profile && (
           <div className="mb-6 p-4 bg-white rounded-xl shadow border">
             <h2 className="text-lg font-semibold">
               Bem-vindo, {profile.name ?? user?.email}!
             </h2>
-            <p className="text-sm text-slate-600">
-              ID do usuário: {user?.id}
-            </p>
           </div>
         )}
 
-        <div className="flex flex-col gap-4 mb-6">
+
+
+      <EditNamesModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        profile={profile}
+        onSave={loadProfile}
+      />
+
 
           <YearSelect
             selectedYear={selectedYear}
@@ -188,9 +220,10 @@ export default function DashboardPage() {
 
         </div>
 
-
-
-        <Dashboard transactions={filteredTransactions} />
+        <Dashboard transactions={filteredTransactions}
+          person1Name={profile?.person1_name ?? "Pessoa 1"}
+          person2Name={profile?.person2_name ?? "Pessoa 2"}
+        />
 
         <div className="mt-8">
           {loading ? (
@@ -203,8 +236,6 @@ export default function DashboardPage() {
               onDelete={handleDelete}
               onEdit={handleEdit}
             />
-
-
           )}
         </div>
       </main>
@@ -212,10 +243,11 @@ export default function DashboardPage() {
       {showForm && (
         <TransactionForm
           onClose={() => setShowForm(false)}
-          onSubmit={handleSubmitFromModal}  // vou te ensinar já já
-          transactionToEdit={transactionToEdit} // ← chave da edição
+          onSubmit={handleSubmitFromModal}  //
+          transactionToEdit={transactionToEdit}
         />
       )}
+
     </div>
   );
 }

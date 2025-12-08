@@ -3,14 +3,17 @@
 import { Heart, Plus, LogOut } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { Settings } from "lucide-react";
+
 
 interface HeaderProps {
   onAddClick: () => void;
   userName?: string | null;
   userEmail?: string | null;
+  onOpenSettings: () => void;
 }
 
-export function Header({ onAddClick, userName, userEmail }: HeaderProps) {
+export function Header({ onAddClick, userName, userEmail, onOpenSettings }: HeaderProps) {
   const router = useRouter();
 
   async function handleLogout() {
@@ -34,7 +37,6 @@ export function Header({ onAddClick, userName, userEmail }: HeaderProps) {
                 Gerenciamento financeiro compartilhado
               </p>
 
-              {/* 🔵 Usuário logado */}
               {userEmail && (
                 <p className="text-xs text-slate-400 mt-1">
                   Logado como: <span className="font-medium text-slate-600">{userName ?? userEmail}</span>
@@ -43,10 +45,10 @@ export function Header({ onAddClick, userName, userEmail }: HeaderProps) {
             </div>
           </div>
 
-          {/* DIREITA: Nova Transação + Logout */}
+          {/* DIREITA: Botões */}
           <div className="flex items-center gap-2 w-full sm:w-auto">
 
-            {/* Botão Nova Transação (original) */}
+            {/* Novo */}
             <button
               onClick={onAddClick}
               aria-label="Nova Transação"
@@ -56,7 +58,7 @@ export function Header({ onAddClick, userName, userEmail }: HeaderProps) {
               <span className="hidden sm:inline">Nova Transação</span>
             </button>
 
-            {/* 🔴 Botão Logout */}
+            {/* Logout */}
             <button
               onClick={handleLogout}
               aria-label="Sair"
@@ -65,6 +67,16 @@ export function Header({ onAddClick, userName, userEmail }: HeaderProps) {
               <LogOut className="w-5 h-5" />
               <span className="hidden sm:inline">Sair</span>
             </button>
+
+            {/* Configurar Nomes */}
+            <button
+              onClick={onOpenSettings}
+              className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 inline-flex items-center gap-2"
+            >
+              <Settings className="w-5 h-5" />
+              Configurar Nomes
+            </button>
+
           </div>
 
         </div>
