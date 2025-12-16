@@ -5,13 +5,16 @@ import { Trash2, TrendingUp, TrendingDown, Calendar, Repeat, CreditCard, Filter,
 interface TransactionListProps {
   transactions: Transaction[];
   onDelete: (id: string) => void;
-  onEdit: (transaction: Transaction) => void; // NOVO
+  onEdit: (transaction: Transaction) => void;
+  person1Name: string;
+  person2Name: string;
 }
 
 type FilterType = 'all' | 'income' | 'expense';
 type FilterOwner = 'all' | 'person1' | 'person2' | 'shared';
+type Owner = 'person1' | 'person2' | 'shared';
 
-export function TransactionList({ transactions, onDelete, onEdit }: TransactionListProps) {
+export function TransactionList({ transactions, onDelete, onEdit, person1Name, person2Name }: TransactionListProps) {
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [filterOwner, setFilterOwner] = useState<FilterOwner>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,21 +29,30 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
 
   const getOwnerLabel = (owner: string) => {
     switch (owner) {
-      case 'person1': return 'Pessoa 1';
-      case 'person2': return 'Pessoa 2';
-      case 'shared': return 'Compartilhado';
-      default: return owner;
+      case 'person1':
+        return person1Name;
+      case 'person2':
+        return person2Name;
+      case 'shared':
+        return 'Compartilhado';
+      default:
+        return owner;
     }
   };
 
-  const getOwnerColor = (owner: string) => {
+  const getOwnerColor = (owner: Owner) => {
     switch (owner) {
-      case 'person1': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'person2': return 'bg-purple-100 text-purple-700 border-purple-200';
-      case 'shared': return 'bg-pink-100 text-pink-700 border-pink-200';
-      default: return 'bg-slate-100 text-slate-700 border-slate-200';
+      case 'person1':
+        return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'person2':
+        return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'shared':
+        return 'bg-pink-100 text-pink-700 border-pink-200';
+      default:
+        return 'bg-slate-100 text-slate-700 border-slate-200';
     }
   };
+
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
@@ -69,8 +81,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterType('all')}
                 className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'all'
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 Todas
@@ -78,8 +90,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterType('income')}
                 className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'income'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 Receitas
@@ -87,8 +99,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterType('expense')}
                 className={`flex-1 px-4 py-2 rounded-lg transition-all ${filterType === 'expense'
-                    ? 'bg-red-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-red-600 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 Despesas
@@ -102,8 +114,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterOwner('all')}
                 className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'all'
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 Todos
@@ -111,8 +123,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterOwner('person1')}
                 className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'person1'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 P1
@@ -120,8 +132,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterOwner('person2')}
                 className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'person2'
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 P2
@@ -129,8 +141,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
               <button
                 onClick={() => setFilterOwner('shared')}
                 className={`flex-1 px-3 py-2 rounded-lg transition-all text-sm ${filterOwner === 'shared'
-                    ? 'bg-pink-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-pink-600 text-white'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
               >
                 Comp.
@@ -156,8 +168,8 @@ export function TransactionList({ transactions, onDelete, onEdit }: TransactionL
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <div className={`p-2 rounded-lg ${transaction.type === 'income'
-                        ? 'bg-green-100'
-                        : 'bg-red-100'
+                      ? 'bg-green-100'
+                      : 'bg-red-100'
                       }`}>
                       {transaction.type === 'income' ? (
                         <TrendingUp className={`w-4 h-4 ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'

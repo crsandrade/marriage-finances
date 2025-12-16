@@ -42,7 +42,7 @@ export default function DashboardPage() {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .eq("user_id", userId)
+      .eq("id", userId)
       .single();
 
     if (!error) setProfile(data);
@@ -180,32 +180,32 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
 
-        
+
         <div className="flex flex-col gap-4 mb-6">
 
-      <Header
-        onAddClick={() => setIsAddOpen(true)}
-        userName={profile?.person1_name}
-        userEmail={user?.email ?? null}
-        onOpenSettings={openSettingsModal}
-      />
-
-      {profile && (
-          <div className="mb-6 p-4 bg-white rounded-xl shadow border">
-            <h2 className="text-lg font-semibold">
-              Bem-vindo, {profile.name ?? user?.email}!
-            </h2>
-          </div>
-        )}
+          <Header
+            onAddClick={openNewTransaction}
+            userName={profile?.person1_name}
+            userEmail={user?.email ?? null}
+            onOpenSettings={openSettingsModal}
+          />
 
 
+          {profile && (
+            <div className="mb-6 p-4 bg-white rounded-xl shadow border">
+              <h2 className="text-lg font-semibold">
+                Bem-vindo, {profile.name ?? user?.email}!
+              </h2>
+            </div>
+          )}
 
-      <EditNamesModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        profile={profile}
-        onSave={loadProfile}
-      />
+
+          <EditNamesModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            profile={profile}
+            onSave={loadProfile}
+          />
 
 
           <YearSelect
@@ -235,6 +235,8 @@ export default function DashboardPage() {
               transactions={filteredTransactions}
               onDelete={handleDelete}
               onEdit={handleEdit}
+              person1Name={profile?.person1_name ?? 'Pessoa 1'}
+              person2Name={profile?.person2_name ?? 'Pessoa 2'}
             />
           )}
         </div>
