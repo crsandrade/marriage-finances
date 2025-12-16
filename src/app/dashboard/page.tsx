@@ -22,8 +22,11 @@ import EditNamesModal from "@/components/EditNamesModal";
 
 interface Profile {
   id: string;
-  name: string | null;
+
   created_at: string;
+
+  person1_name: string | null;
+  person2_name: string | null;
 }
 
 export default function DashboardPage() {
@@ -194,7 +197,7 @@ export default function DashboardPage() {
           {profile && (
             <div className="mb-6 p-4 bg-white rounded-xl shadow border">
               <h2 className="text-lg font-semibold">
-                Bem-vindo, {profile.name ?? user?.email}!
+                Bem-vindo, {profile.person1_name ?? user?.email}!
               </h2>
             </div>
           )}
@@ -204,7 +207,8 @@ export default function DashboardPage() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             profile={profile}
-            onSave={loadProfile}
+            onSave={() => loadProfile(user.id)}
+
           />
 
 
