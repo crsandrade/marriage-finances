@@ -94,7 +94,7 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit, person1N
         {/* FORMULÁRIO COMPLETO */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           
-          <p className="text-sm text-slate-500">
+          <p className="text-sm font-bold text-slate-500">
             Campos marcados com <span className="text-red-500">*</span> são obrigatórios
           </p>
 
