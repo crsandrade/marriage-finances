@@ -16,7 +16,7 @@ import { supabase } from "@/lib/supabase";
 import { MonthBar } from "../../components/MonthBar";
 import { YearSelect } from "../../components/YearSelect";
 import EditNamesModal from "@/components/EditNamesModal";
-
+import { AccountSecurityCard } from "@/components/AccountSecurityCard";
 
 
 
@@ -188,7 +188,7 @@ export default function DashboardPage() {
 
           <Header
             onAddClick={openNewTransaction}
-            userName={profile?.person1_name}
+            userName={profile?.person1_name || user?.email || "Usuário"}
             userEmail={user?.email ?? null}
             onOpenSettings={openSettingsModal}
           />

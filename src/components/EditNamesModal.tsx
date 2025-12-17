@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { X } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 interface EditNamesModalProps {
   isOpen: boolean;
@@ -20,6 +21,14 @@ export default function EditNamesModal({ isOpen, onClose, profile, onSave }: Edi
 
   async function handleSave() {
     setLoading(true);
+    
+    try {
+    const hasNumbers = /\d/.test(person1Name) || /\d/.test(person2Name);
+
+    if (hasNumbers) {
+      toast.error("Nomes não podem conter números.");
+      return
+    }
 
     const { error } = await supabase
       .from("profiles")
@@ -32,18 +41,24 @@ export default function EditNamesModal({ isOpen, onClose, profile, onSave }: Edi
     setLoading(false);
 
     if (error) {
-      alert("Erro ao salvar: " + error.message);
-      return;
+      toast.error("Erro ao salvar os nomes.");
+      return
     }
 
-    if (onSave) onSave();
+    toast.success("Nomes atualizados com sucesso!");
     onClose();
+  } catch (err) {
+    toast.error("Erro inesperado ao salvar.");
+  } finally {
+    setLoading(false);
   }
+
+}
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
-        
+
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Configurações</h2>
@@ -55,7 +70,7 @@ export default function EditNamesModal({ isOpen, onClose, profile, onSave }: Edi
         {/* Input Pessoa 1 */}
         <label className="block mb-3">
           <span className="text-sm text-gray-600">Nome da Pessoa 1</span>
-          <input
+          <input type="text"
             className="w-full mt-1 p-2 border rounded-lg"
             value={person1Name}
             onChange={(e) => setPerson1Name(e.target.value)}
@@ -65,7 +80,7 @@ export default function EditNamesModal({ isOpen, onClose, profile, onSave }: Edi
         {/* Input Pessoa 2 */}
         <label className="block mb-3">
           <span className="text-sm text-gray-600">Nome da Pessoa 2</span>
-          <input
+          <input type="text"
             className="w-full mt-1 p-2 border rounded-lg"
             value={person2Name}
             onChange={(e) => setPerson2Name(e.target.value)}
