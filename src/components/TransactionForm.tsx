@@ -16,7 +16,7 @@ const categories = {
   expense: ['Aluguel', 'Supermercado', 'Transporte', 'Alimentação', 'Lazer', 'Saúde', 'Educação', 'Contas', 'Outros'],
 };
 
-export function TransactionForm({ onClose, onSubmit, transactionToEdit }: TransactionFormProps) {
+export function TransactionForm({ onClose, onSubmit, transactionToEdit, person1Name, person2Name }: TransactionFormProps) {
   const isEditing = Boolean(transactionToEdit);
 
   const [type, setType] = useState<TransactionType>('expense');
@@ -93,6 +93,10 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit }: Transa
 
         {/* FORMULÁRIO COMPLETO */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          
+          <p className="text-sm text-slate-500">
+            Campos marcados com <span className="text-red-500">*</span> são obrigatórios
+          </p>
 
           {/* Tipo */}
           <div>
@@ -150,11 +154,14 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit }: Transa
 
           {/* Categoria */}
           <div>
-            <label className="block mb-2 text-slate-700">Categoria</label>
+            <label className="block mb-2 text-slate-700">
+              Categoria <span className="text-red-500">*</span>
+            </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-300"
+              required
             >
               <option value="">Selecione...</option>
               {categories[type].map((cat) => (
@@ -165,35 +172,46 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit }: Transa
 
           {/* Valor */}
           <div>
-            <label className="block mb-2 text-slate-700">Valor</label>
+            <label className="block mb-2 text-slate-700">
+              Valor (R$) <span className="text-red-500">*</span>
+            </label>
             <input
               type="number"
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-300"
+              placeholder="0,00"
+              required
             />
           </div>
 
           {/* Descrição */}
           <div>
-            <label className="block mb-2 text-slate-700">Descrição</label>
+            <label className="block mb-2 text-slate-700">
+              Descrição <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-300"
+              placeholder="Ex: Supermercado Semanal"
+              required
             />
           </div>
 
           {/* Data */}
           <div>
-            <label className="block mb-2 text-slate-700">Data</label>
+            <label className="block mb-2 text-slate-700">
+              Data <span className="text-red-500">*</span>
+            </label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-300"
+              required
             />
           </div>
 
@@ -214,22 +232,28 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit }: Transa
           {isInstallment && (
             <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl">
               <div>
-                <label className="block mb-2">Parcela Atual</label>
+                <label className="block mb-2">
+                  Parcela Atual <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="number"
                   value={installmentCurrent}
                   onChange={(e) => setInstallmentCurrent(e.target.value)}
                   className="w-full px-4 py-2 rounded-lg border border-slate-300"
+                  required
                 />
               </div>
 
               <div>
-                <label className="block mb-2">Total de Parcelas</label>
+                <label className="block mb-2">
+                  Total de Parcelas <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="number"
                   value={installmentTotal}
                   onChange={(e) => setInstallmentTotal(e.target.value)}
                   className="w-full px-4 py-2 rounded-lg border border-slate-300"
+                  required
                 />
               </div>
             </div>
