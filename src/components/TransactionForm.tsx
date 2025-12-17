@@ -6,6 +6,9 @@ interface TransactionFormProps {
   onClose: () => void;
   onSubmit: (transaction: Partial<Transaction>) => void;
   transactionToEdit?: Transaction | null;
+
+  person1Name: string;
+  person2Name: string;
 }
 
 const categories = {
@@ -128,13 +131,13 @@ export function TransactionForm({ onClose, onSubmit, transactionToEdit }: Transa
               <button type="button" onClick={() => setOwner("person1")} className={`p-4 rounded-xl border-2 transition-all ${
                 owner === "person1" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 hover:border-slate-300"
               }`}>
-                Rafael
+                {person1Name}
               </button>
 
               <button type="button" onClick={() => setOwner("person2")} className={`p-4 rounded-xl border-2 transition-all ${
                 owner === "person2" ? "border-purple-500 bg-purple-50 text-purple-700" : "border-slate-200 hover:border-slate-300"
               }`}>
-                Lavínia
+                {person2Name  }
               </button>
 
               <button type="button" onClick={() => setOwner("shared")} className={`p-4 rounded-xl border-2 transition-all ${

@@ -202,7 +202,6 @@ export default function DashboardPage() {
             </div>
           )}
 
-
           <EditNamesModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
@@ -251,6 +250,8 @@ export default function DashboardPage() {
           onClose={() => setShowForm(false)}
           onSubmit={handleSubmitFromModal}  //
           transactionToEdit={transactionToEdit}
+          person1Name={profile?.person1_name ?? 'Pessoa 1'}
+          person2Name={profile?.person2_name ?? 'Pessoa 2'}
         />
       )}
 
