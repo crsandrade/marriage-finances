@@ -29,6 +29,21 @@ interface Profile {
   person2_name: string | null;
 }
 
+/**
+ * Página principal do Dashboard.
+ * 
+ * Reúne os componentes principais:
+ * - Header: Navegação e ações globais.
+ * - Dashboard (Resumo): Cards com totais e gráficos.
+ * - TransactionList: Tabela detalhada de transações.
+ * - TransactionForm: Modal para criar/editar transações.
+ * 
+ * Gerencia o estado global da tela:
+ * - Lista de transações (transactions).
+ * - Perfil do usuário (profile).
+ * - Filtros de data (Mês/Ano).
+ * - Modais (showForm, isModalOpen).
+ */
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showForm, setShowForm] = useState(false);

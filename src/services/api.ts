@@ -1,6 +1,12 @@
 import { supabase } from "../lib/supabase";
 import type { Transaction } from "../types/financial";
 
+/**
+ * Busca todas as transações do usuário logado no Supabase.
+ * 
+ * @returns {Promise<Transaction[]>} Lista de transações ordenadas por data (decrescente).
+ * Retorna um array vazio caso o usuário não esteja logado ou ocorra um erro.
+ */
 export const getTransactions = async (): Promise<Transaction[]> => {
   const {
     data: { user },
@@ -22,6 +28,13 @@ export const getTransactions = async (): Promise<Transaction[]> => {
   return data as Transaction[];
 };
 
+/**
+ * Adiciona uma nova transação ao banco de dados.
+ * 
+ * @param {Omit<Transaction, "id">} payload - Objeto com os dados da transação (sem ID).
+ * @returns {Promise<Transaction>} A transação criada com o ID gerado.
+ * @throws {Error} Se o usuário não estiver logado ou ocorrer erro na inserção.
+ */
 export const addTransaction = async (
   payload: Omit<Transaction, "id">
 ): Promise<Transaction> => {
@@ -48,6 +61,13 @@ export const addTransaction = async (
   return data as Transaction;
 };
 
+/**
+ * Remove uma transação do banco de dados pelo ID.
+ * 
+ * @param {string} id - O UUID da transação a ser removida.
+ * @returns {Promise<void>}
+ * @throws {Error} Se o usuário não estiver logado ou ocorrer erro na exclusão.
+ */
 export const deleteTransaction = async (id: string): Promise<void> => {
   const {
     data: { user },

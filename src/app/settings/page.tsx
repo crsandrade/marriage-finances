@@ -15,6 +15,16 @@ interface Profile {
   person2_name: string | null;
 }
 
+/**
+ * Página de Configurações.
+ * 
+ * Permite ao usuário:
+ * - Alterar os nomes exibidos no dashboard (Person 1 / Person 2).
+ * - Alterar a senha da conta.
+ * - Realizar logout.
+ * 
+ * Protegida por autenticação (redireciona para /login se não houver sessão).
+ */
 export default function SettingsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);

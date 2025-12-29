@@ -8,12 +8,21 @@ import { usePathname } from "next/navigation";
 
 
 interface HeaderProps {
+  /** Função chamada ao clicar no botão de "Nova Transação" */
   onAddClick?: () => void;
+  /** (Opcional) Callback para abrir configurações (legado ou futuro uso modal) */
   onOpenSettings?: () => void;
+  /** Nome do usuário a ser exibido no cabeçalho */
   userName?: string | null;
+  /** E-mail do usuário logado */
   userEmail?: string | null;
 }
 
+/**
+ * Componente de cabeçalho global da aplicação.
+ * Exibe o logo, informações do usuário logado e botões de ação (Nova Transação, Configurações, Home).
+ * Adapta-se a diferentes rotas para mostrar/esconder botões de navegação.
+ */
 export function Header({ onAddClick, userName, userEmail, onOpenSettings }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
