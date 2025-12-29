@@ -52,22 +52,30 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <nav className="container mx-auto px-6 py-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-white" />
+      <header>
+        <nav className="container mx-auto px-6 py-6 flex justify-between items-center" aria-label="Navegação principal">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 flex items-center justify-center relative">
+              <Image 
+                src="/sucesso-planejado-logo.png" 
+                alt="Logo Sucesso Planejado" 
+                width={40} 
+                height={40}
+                className="object-contain"
+              />
+            </div>
+            <span className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Sucesso Planejado
+            </span>
           </div>
-          <span className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Sucesso Planejado
-          </span>
-        </div>
 
-        <Link href="/login">
-          <Button variant="outline" className="border-blue-200 hover:bg-blue-50">
-            Fazer Login
-          </Button>
-        </Link>
-      </nav>
+          <Link href="/login">
+            <Button variant="outline" className="border-blue-200 hover:bg-blue-50">
+              Fazer Login
+            </Button>
+          </Link>
+        </nav>
+      </header>
 
       {/* Hero */}
       <main className="container mx-auto px-6 py-20">
@@ -150,7 +158,7 @@ export default function Home() {
                   className="p-6 hover:shadow-lg transition-shadow"
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-blue-600" />
+                    <Icon className="w-6 h-6 text-blue-600" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl mb-2">{feature.title}</h3>
                   <p className="text-gray-600">{feature.description}</p>
@@ -166,7 +174,7 @@ export default function Home() {
             Pronto para transformar suas finanças?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Junte-se a milhares de usuários que já estão no controle
+            Junte-se a diversos usuários que já estão no controle
           </p>
 
           <Link href="/signup">
@@ -179,19 +187,19 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="container mx-auto px-6 py-8 mt-20 border-t border-gray-200">
+      <footer className="container mx-auto px-6 py-8 mt-20 border-t border-gray-200" aria-label="Rodapé">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-600">
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-            <span>© 2025 Sucesso Planejado</span>
+            <TrendingUp className="w-5 h-5 text-blue-600" aria-hidden="true" />
+            <small className="text-base">© 2025 Sucesso Planejado</small>
           </div>
-          <div className="flex gap-6">
-            <span className="hover:text-blue-600 cursor-pointer">Termos</span>
-            <span className="hover:text-blue-600 cursor-pointer">
+          <nav className="flex gap-6" aria-label="Links legais">
+            <Link href="#" className="hover:text-blue-600 transition-colors">Termos</Link>
+            <Link href="#" className="hover:text-blue-600 transition-colors">
               Privacidade
-            </span>
-            <span className="hover:text-blue-600 cursor-pointer">Suporte</span>
-          </div>
+            </Link>
+            <Link href="#" className="hover:text-blue-600 transition-colors">Suporte</Link>
+          </nav>
         </div>
       </footer>
     </div>

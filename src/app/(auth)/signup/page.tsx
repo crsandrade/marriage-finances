@@ -25,34 +25,46 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="max-w-sm mx-auto py-12">
-      <h1 className="text-2xl font-bold mb-4">Criar conta</h1>
+    <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4">
+      <div className="w-full max-w-md bg-card text-card-foreground shadow-xl rounded-xl p-8 border border-border">
+        <h1 className="text-2xl font-bold mb-6 text-foreground text-center">Criar conta</h1>
 
-      <form onSubmit={handleSignup} className="flex flex-col gap-4">
-        <input
-          className="border p-2 rounded"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div>
+            <input
+              className="w-full p-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          className="border p-2 rounded"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <div>
+            <input
+              type="password"
+              className="w-full p-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <button
-          disabled={loading}
-          className="bg-blue-600 text-white p-2 rounded"
-        >
-          Criar conta
-        </button>
-      </form>
+          <button
+            disabled={loading}
+            className="w-full bg-primary text-primary-foreground p-3 rounded-lg hover:bg-primary/90 transition-all disabled:opacity-60"
+          >
+            {loading ? "Criando conta..." : "Criar conta"}
+          </button>
+        </form>
 
-      {message && <p className="mt-4 text-red-600">{message}</p>}
+        {message && (
+          <p className={`mt-4 text-center text-sm font-medium ${message.includes("sucesso") ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

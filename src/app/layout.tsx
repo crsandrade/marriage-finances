@@ -1,4 +1,4 @@
-import '../index.css';
+import '../styles/globals.css';
 import { Toaster } from 'react-hot-toast';
 import type { Metadata } from 'next';
 
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: 'Sucesso Planejado',
     template: '%s | Sucesso Planejado',
   },
-  description: 'Plataforma de planejamento e acompanhamento.',
+  description: 'Plataforma de planejamento financeiro para casais. Acompanhe gastos, investimentos e metas financeiras em conjunto de forma inteligente.',
   robots: {
     index: true,
     follow: true,

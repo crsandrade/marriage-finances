@@ -36,19 +36,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4">
+      <div className="w-full max-w-md bg-card text-card-foreground shadow-xl rounded-xl p-8 border border-border">
 
         {/* Logo e título */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-rose-500 rounded-2xl mb-4">
-            <Heart className="w-8 h-8 text-white fill-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
+            <Heart className="w-8 h-8 text-primary-foreground fill-primary-foreground" />
           </div>
 
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground">
             Bem-vindo de volta!
           </h1>
-          <p className="text-gray-600 text-sm">
+          <p className="text-muted-foreground text-sm">
             Entre para gerenciar suas finanças em casal
           </p>
         </div>
@@ -58,11 +58,11 @@ export default function LoginPage() {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-foreground mb-2">
               E-mail
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
 
               <input
                 id="email"
@@ -71,18 +71,18 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full pl-11 pr-4 py-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
               />
             </div>
           </div>
 
           {/* Senha */}
           <div>
-            <label htmlFor="password" className="block text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-foreground mb-2">
               Senha
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
 
               <input
                 id="password"
@@ -91,13 +91,13 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-11 pr-11 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full pl-11 pr-11 py-3 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -110,7 +110,7 @@ export default function LoginPage() {
 
           {/* Erro */}
           {errorMsg && (
-            <p className="text-sm text-center text-red-600 font-medium">
+            <p className="text-sm text-center text-destructive font-medium">
               {errorMsg}
             </p>
           )}
@@ -119,7 +119,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-rose-500 text-white py-3 rounded-lg hover:from-purple-700 hover:to-rose-600 transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-60"
+            className="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-60"
           >
             {loading ? "Entrando..." : "Entrar"}
             {!loading && (
@@ -131,16 +131,16 @@ export default function LoginPage() {
         {/* Divider */}
         <div className="relative my-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-gray-500">ou</span>
+            <span className="px-4 bg-card text-muted-foreground">ou</span>
           </div>
         </div>
 
         {/* Login Social */}
         <div className="space-y-3">
-          <button className="w-full py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3">
+          <button className="w-full py-3 px-4 border border-input rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors flex items-center justify-center gap-3">
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -162,7 +162,7 @@ export default function LoginPage() {
             Continuar com Google
           </button>
 
-          <button className="w-full py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3">
+          <button className="w-full py-3 px-4 border border-input rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors flex items-center justify-center gap-3">
             <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
@@ -172,11 +172,11 @@ export default function LoginPage() {
 
         {/* Cadastro */}
         <div className="mt-8 text-center">
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Ainda não tem uma conta?{" "}
             <Link
               href="/signup"
-              className="text-purple-600 hover:text-purple-700 transition-colors"
+              className="text-primary hover:underline transition-colors"
             >
               Cadastre-se gratuitamente
             </Link>
