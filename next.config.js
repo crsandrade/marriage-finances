@@ -1,9 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'sucessoplanejado.com.br',
+          },
+        ],
+        destination: 'https://www.sucessoplanejado.com.br/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
   webpack: (config) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
+
     Object.assign(config.resolve.alias, {
       'vaul@1.1.2': 'vaul',
       'sonner@2.0.3': 'sonner',
@@ -44,6 +62,7 @@ const nextConfig = {
       '@radix-ui/react-alert-dialog@1.1.6': '@radix-ui/react-alert-dialog',
       '@radix-ui/react-accordion@1.2.3': '@radix-ui/react-accordion',
     });
+
     return config;
   },
 };
